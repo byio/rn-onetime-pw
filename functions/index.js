@@ -1,4 +1,5 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 
 // import functions
 const createUser = require('./create_user');
