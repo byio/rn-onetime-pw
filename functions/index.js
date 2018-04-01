@@ -3,6 +3,7 @@ const admin = require('firebase-admin');
 
 // import functions
 const createUser = require('./create_user');
+const requestOtp = require('./request_otp');
 
 // initialize service account
 const serviceAccount = require('./service_account.json');
@@ -13,3 +14,4 @@ admin.initializeApp({
 
 // export function to be used by google cloud functions
 exports.createUser = functions.https.onRequest(createUser);
+exports.requestOtp = functions.https.onRequest(requestOtp);
