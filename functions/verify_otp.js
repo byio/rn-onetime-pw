@@ -17,6 +17,8 @@ module.export = (req, res) => {
          const ref = admin.database().ref('users/' + phone);
          // listen to value changes in ref
          ref.on('value', snapshot => {
+           // stop listening on ref after snapshot is returns
+           ref.off();
            const userRecord = snapshot.val();
            // if otp doesn't match or has expired
            if (userRecord.code !== code || !user.codeValid) {
