@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 
 // create and export verifyOtp function
-modules.export = (req, res) => {
+module.export = (req, res) => {
   // check for phone number and otp
   if (!req.body.phone || !req.body.code) {
     return res.status(422).send({ error: 'Phone and code must be provided.' });
@@ -24,7 +24,18 @@ modules.export = (req, res) => {
            }
            // update codeValid property
            ref.update({ codeValid: false });
+           // create and return jwt to authenticate user
+           admin.auth()
+                .createCustomToken(phone)
+                .then(token => {
+                  res.send({ token });
+                  return null;
+                })
+                .catch(err => {
+                  res.status(422).send({ error: err });
+                });
          });
+         return null;
        })
        .catch(err => {
          // if user cannot be found
