@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 
 // create and export verifyOtp function
-module.export = (req, res) => {
+module.exports = (req, res) => {
   // check for phone number and otp
   if (!req.body.phone || !req.body.code) {
     return res.status(422).send({ error: 'Phone and code must be provided.' });
@@ -19,9 +19,9 @@ module.export = (req, res) => {
          ref.on('value', snapshot => {
            // stop listening on ref after snapshot is returns
            ref.off();
-           const userRecord = snapshot.val();
+           const user = snapshot.val();
            // if otp doesn't match or has expired
-           if (userRecord.code !== code || !user.codeValid) {
+           if (user.code !== code || !user.codeValid) {
              return res.status(422).send({ error: 'Invalid code.' });
            }
            // update codeValid property
@@ -30,7 +30,7 @@ module.export = (req, res) => {
            admin.auth()
                 .createCustomToken(phone)
                 .then(token => {
-                  res.send({ token });
+                  res.send({ token: token });
                   return null;
                 })
                 .catch(err => {
